@@ -168,4 +168,6 @@ app.delete('/api/files/:id', async (req, res) => {
     res.json(await File.findByIdAndDelete(req.params.id));
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+const PORT = process.env.PORT || 8099;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

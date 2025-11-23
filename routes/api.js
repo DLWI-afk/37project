@@ -48,4 +48,22 @@ router.delete("/files/:id", async (req, res) => {
     res.json({ message: "File deleted" });
 });
 
+router.put("/files/:id", async (req, res) => {
+    const { filename } = req.body;
+
+    const file = await File.findById(req.params.id);
+    if (!file) return res.status(404).json({ error: "File is not found" });
+
+    if (!filename) return res.status(400).json({ error: "Filename required" });
+
+    file.filename = filename;
+    await file.save();
+
+    res.json({
+        message: "File is updated",
+        file
+    });
+});
+
+
 module.exports = router;

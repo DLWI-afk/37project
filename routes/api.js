@@ -26,18 +26,23 @@ router.get("/files/:id", async (req, res) => {
 });
 
 router.post("/files", upload.single("file"), async (req, res) => {
-    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  try {
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    const newFile = await File.create({
-        filename: req.file.originalname,
-        path: req.file.filename,
-        size: req.file.size
-    });
+    const newFile = await File.create({
+      filename: req.file.originalname,
+      path: req.file.filename,
+      size: req.file.size
+    });
 
-    res.json({
-        message: "File uploaded",
-        file: newFile
-    });
+    res.status(201).json({
+      message: "File uploaded",
+      file: newFile
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 router.delete("/files/:id", async (req, res) => {

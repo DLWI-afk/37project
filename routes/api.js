@@ -28,11 +28,15 @@ router.get("/files/:id", async (req, res) => {
 router.post("/files", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+    const userId = req.session?.userId;
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
     const newFile = await File.create({
       filename: req.file.originalname,
-      path: req.file.filename,
-      size: req.file.size
+      path: req.file.path,
+      size: req.file.size,
+      uploadDate: new Date(),
+      userId: userId
     });
 
     res.status(201).json({
@@ -40,10 +44,11 @@ router.post("/files", upload.single("file"), async (req, res) => {
       file: newFile
     });
   } catch (error) {
-    console.error(error);
+    console.error('Upload error:', error);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 router.delete("/files/:id", async (req, res) => {
     const file = await File.findById(req.params.id);

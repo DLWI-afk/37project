@@ -152,8 +152,6 @@ app.get('/delete/:id', isAuth, async (req, res) => {
     }
 });
 
-});
-
 const PORT = process.env.PORT || 8099;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

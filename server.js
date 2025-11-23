@@ -152,20 +152,6 @@ app.get('/delete/:id', isAuth, async (req, res) => {
     }
 });
 
-app.get('/api/files', async (req, res) => {
-    res.json(await File.find());
-});
-
-app.post('/api/files', async (req, res) => {
-    res.json(await File.create(req.body));
-});
-
-app.put('/api/files/:id', async (req, res) => {
-    res.json(await File.findByIdAndUpdate(req.params.id, req.body, { new: true }));
-});
-
-app.delete('/api/files/:id', async (req, res) => {
-    res.json(await File.findByIdAndDelete(req.params.id));
 });
 
 const PORT = process.env.PORT || 8099;
